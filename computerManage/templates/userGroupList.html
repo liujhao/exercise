@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}用户组列表{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="col-md-12 text-right" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="/web/groupadd/">新增用户组</a>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped table-hover">
+            <tr class="info">
+                <th>名称</th>
+                <th>可管理电脑</th>
+                <th class="text-center">操作</th>
+            </tr>
+            {% for item in gplist %}
+            <tr>
+                <td>{{ item.group.name }}</td>
+                <td>{{ item.managePcs }}</td>
+                <td class="text-center"></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

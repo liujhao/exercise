@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}用户类型列表{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="col-md-12 text-right" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="/web/utypeadd/">新增用户类型</a>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped table-hover">
+            <tr class="info">
+                <th>类型名称</th>
+                <th class="text-center">操作</th>
+            </tr>
+            {% for item in list %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="text-center"></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

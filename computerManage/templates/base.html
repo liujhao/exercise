@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var curUrl = window.location.pathname;
+            $("#topNav li").each(function(){
+                if(curUrl.indexOf($(this).attr("nav"))>-1){
+                    $(this).addClass('active');
+                }else{
+                    $(this).removeClass('active');
+                }
+            });
+            if($(".form-group div input").size()>0) {
+               if(!$(".form-group div input").hasClass('form-control')) {
+                   $(".form-group div input").addClass("form-control");
+               }
+           }           
+        });
+    </script>
+    {% block headjs %}{% endblock %}
+</head>
+<body>
+<div class="container" style="margin-bottom: 5px;">
+    <ul id="topNav" class="nav nav-tabs" role="tablist" style="background-color: #efefff">
+        <li role="presentation" nav="index" style='font-weight: bold;'><a href="/">电脑管理系统</a></li>
+        <li role="presentation" nav="/web/pc"><a href="/web/pclist/">电脑管理</a></li>
+        <li role="presentation" nav="/web/group"><a href="/web/grouplist/">用户组管理</a></li>
+        <li role="presentation" nav="/web/utype"><a href="/web/utypelist/">用户类型管理</a></li>
+        <li role="presentation" nav="/web/user"><a href="/web/userlist/">用户管理</a></li>
+    </ul>
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>

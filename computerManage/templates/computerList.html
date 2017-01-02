@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}电脑列表{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="col-md-12 text-right" style="margin-bottom: 5px;">
+        <a class="btn btn-primary" href="/web/pcadd/">新增电脑</a>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped table-hover">
+            <tr class="info">
+                <th>名称</th>
+                <th>编号</th>
+                <th>IP</th>
+                <th class="text-center">操作</th>
+            </tr>
+            {% for pc in list %}
+            <tr>
+                <td>{{ pc.name }}</td>
+                <td>{{ pc.code }}</td>
+                <td>{{ pc.ip }}</td>
+                <td class="text-center"></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
