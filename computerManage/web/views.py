@@ -29,25 +29,20 @@ def pcEdit(request, id):
         form = pcForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            if Computer.objects.filter(code=data['code']).count()==0:
-                Computer.objects.create(name=data['name'], code=data['code'], ip=data['ip'])
-                if request.POST['act'] == 'save':
-                    # return render_to_response('computerAdd.html', {'form': pcform,'success':'保存成功！'})
-                    return HttpResponseRedirect('/web/pclist/')
-                else:
-                    return HttpResponseRedirect('/web/pcadd/')
-            else:
-                return render_to_response('computerAdd.html', {'form': pcform, 'err': '编号为【'+data['code']+'】的电脑已存在！'})
+            if Computer.objects.filter(id=id).count()>0:
+                pc = Computer.objects.get(id=id)
+                pc.name = data['name']
+                pc.code = data['code']
+                pc.ip = data['ip']
+                pc.save()
+                return HttpResponse('<script>if(window.opener){window.opener.location.reload();window.close();}</script>')
         else:
             return render_to_response('computerAdd.html', {'form': pcform,'err':'保存失败！'})
     else:
         # print(id)
         pc = Computer.objects.get(id=id)
-
-        pcform.name = pc.name
-        pcform.code = pc.code
-        pcform.ip = pc.ip
-        return render_to_response('computerAdd.html',{'form': pcform})
+        pcform = pcForm(initial={'name':pc.name,'code':pc.code,'ip':pc.ip})
+        return render_to_response('computerAdd.html',{'form': pcform,'id':id})
 
 def pcList(request):
     list = Computer.objects.order_by('-id')
