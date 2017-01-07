@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
-from web.Forms.ComputerAdd import Computer as pcForm
+from web.Forms.Computer import ComputerForm as pcForm
+from web.Forms.Users import UserTypeForm
 from web.models import *
 
 def pcAdd(request):
@@ -109,18 +110,20 @@ def userTypeList(request):
 
 
 def userTypeAdd(request):
+    utypeForm = UserTypeForm()
     if request.method == 'POST':
-        name = request.POST.get('name','')
-        if name.strip() == '':
-            return render_to_response('userTypeAdd.html',{'err':'请输入类型名称！'})
-        else:
-            UserType.objects.create(name=name)
+        form = UserTypeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            UserType.objects.create(name=data['name'])
             if request.POST['act'] == 'save':
                 return HttpResponseRedirect('/web/utypelist/')
             else:
                 return HttpResponseRedirect('/web/utypeadd/')
+        else:
+            return render_to_response('userTypeAdd.html',{'err':'保存失败！'})        
     else:        
-        return render_to_response('userTypeAdd.html')
+        return render_to_response('userTypeAdd.html',{'form':utypeForm})
 
 
 def userList(request):
