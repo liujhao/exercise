@@ -71,7 +71,7 @@ $(function(){
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">所属组：</label>
-            <div class="col-md-3">
+            <div class="col-md-5">
                 {% for group in grouplist %}
                 <label class="checkbox-inline"><input type="checkbox" name="groupId" value="{{ group.id }}">{{ group.name }}</label>
                 {% endfor %}

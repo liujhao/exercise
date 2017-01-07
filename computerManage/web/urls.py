@@ -2,6 +2,7 @@ from django.conf.urls import url
 from web.views import *
 urlpatterns = [
     url(r'^pcadd/',pcAdd),
+    url(r'^pcedit/(?P<id>\d+)',pcEdit),
     url(r'^pclist/',pcList),
     url(r'^grouplist/',groupList),
     url(r'^groupadd/',groupAdd),

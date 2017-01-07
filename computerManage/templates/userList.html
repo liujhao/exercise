@@ -12,22 +12,22 @@
                 <th>用户名</th>
                 <th>用户组</th>
                 <th class="text-center">类型</th>
-                <th class="text-center">性别</th>
                 <th class="text-center">年龄</th>
                 <th>手机</th>
                 <th>邮箱</th>
+                <th class="text-center">添加时间</th>
                 <th class="text-center">操作</th>
             </tr>
             {% for user in list %}
             <tr>
                 <td>{{ user.name }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.UserGroup.name }}</td>
+                <td>{{ user.groupId.name }}</td>
                 <td class="text-center">{{ user.typeId.name }}</td>
                 <td class="text-center">{% if user.gender %}女{% else %}男{% endif %}</td>
-                <td class="text-center">{{ user.age }}</td>
                 <td>{{ user.phone }}</td>
                 <td>{{ user.email }}</td>
+                <td class="text-center">{{ user.createDate|date:"Y-m-d H:i:s" }}</td>
                 <td class="text-center"></td>
             </tr>
             {% endfor %}

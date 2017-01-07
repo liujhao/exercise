@@ -23,6 +23,31 @@ def pcAdd(request):
     else:
         return render_to_response('computerAdd.html',{'form': pcform})
 
+def pcEdit(request, id):
+    pcform = pcForm()
+    if request.method == 'POST':
+        form = pcForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            if Computer.objects.filter(code=data['code']).count()==0:
+                Computer.objects.create(name=data['name'], code=data['code'], ip=data['ip'])
+                if request.POST['act'] == 'save':
+                    # return render_to_response('computerAdd.html', {'form': pcform,'success':'保存成功！'})
+                    return HttpResponseRedirect('/web/pclist/')
+                else:
+                    return HttpResponseRedirect('/web/pcadd/')
+            else:
+                return render_to_response('computerAdd.html', {'form': pcform, 'err': '编号为【'+data['code']+'】的电脑已存在！'})
+        else:
+            return render_to_response('computerAdd.html', {'form': pcform,'err':'保存失败！'})
+    else:
+        # print(id)
+        pc = Computer.objects.get(id=id)
+
+        pcform.name = pc.name
+        pcform.code = pc.code
+        pcform.ip = pc.ip
+        return render_to_response('computerAdd.html',{'form': pcform})
 
 def pcList(request):
     list = Computer.objects.order_by('-id')
@@ -52,7 +77,7 @@ def groupList(request):
 
 def groupAdd(request):
     if request.method == 'POST':
-        name = request.POST['name']
+        name = request.POST.get('name','')
         if name.strip() == '':
             pclist = Computer.objects.order_by('-id').values('id','name')
             return render_to_response('userGroupAdd.html',{'pclist':pclist, 'err':'请输入组名称！'})
@@ -73,7 +98,7 @@ def groupAdd(request):
         return render_to_response('userGroupAdd.html',{'pclist':pclist})
 
 def groupManagePcs(request):
-    ord = request.POST['ord']
+    ord = request.POST.get('ord',None)
     if ord==None:
         ord = 0
     group = UserGroup.objects.get(id=ord)
@@ -90,7 +115,7 @@ def userTypeList(request):
 
 def userTypeAdd(request):
     if request.method == 'POST':
-        name = request.POST['name']
+        name = request.POST.get('name','')
         if name.strip() == '':
             return render_to_response('userTypeAdd.html',{'err':'请输入类型名称！'})
         else:
@@ -103,7 +128,6 @@ def userTypeAdd(request):
         return render_to_response('userTypeAdd.html')
 
 
-
 def userList(request):
     userList = Users.objects.order_by('-createDate')
     return render_to_response('userList.html',{'list':userList})
@@ -113,18 +137,18 @@ def userAdd(request):
     if request.method == 'POST':
         noErr = True
         errTip = ''
-        name = request.POST['name']
-        username = request.POST['username']
-        password = request.POST['password']
-        typeId = request.POST['typeId']
+        name = request.POST.get('name',None)
+        username = request.POST.get('username',None)
+        password = request.POST.get('password',None)
+        typeId = request.POST.get('typeId',None)
         gplist = request.POST.getlist('groupId')
         pcordlist = request.POST.getlist('pcord')
-        age = request.POST['age']
-        gender = request.POST['gender']
-        phone = request.POST['phone']
-        email = request.POST['email']
-        memo = request.POST['memo']
-        act = request.POST['act']
+        age = request.POST.get('age',None)
+        gender = request.POST.get('gender',None)
+        phone = request.POST.get('phone',None)
+        email = request.POST.get('email',None)
+        memo = request.POST.get('memo',None)
+        act = request.POST.get('act','')
         if noErr and name == None:
             errTip = '请输入用户名称！'
             noErr = False
@@ -148,9 +172,19 @@ def userAdd(request):
             contaions['utlist'] = utlist
             return render_to_response('userAdd.html', contaions)
         else:
-            Users.objects.create(name=name,username=username,password=password,
-                typeId=UserType.objects.get(id=typeId),managePcs=transIntOrds(pcordlist),
-                age=age,gender=gender,phone=phone,email=email,memo=memo)
+            user = Users.objects.create(name=name,
+                username=username,password=password,
+                typeId=UserType.objects.get(id=typeId),
+                managePcs=transIntOrds(pcordlist),
+                age=age,gender=gender,phone=phone,
+                email=email,memo=memo)
+            user.save()
+            glist = UserGroup.objects.filter(id__in=gplist)
+            user.groupId.add(*glist)
+            # for gord in gplist:
+            #     group = UserGroup.objects.get(id=gord)
+            #     user.groupId.add(group)
+
             if act == 'save':
                 return HttpResponseRedirect('/web/userlist/')
             else:
