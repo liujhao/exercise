@@ -1,8 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+
 from web.Forms.Computer import ComputerForm as pcForm
 from web.Forms.Users import UserTypeForm
 from web.models import *
+from common import PageHelper
 
 def pcAdd(request):
     pcform = pcForm()
@@ -45,9 +48,17 @@ def pcEdit(request, id):
         pcform = pcForm(initial={'name':pc.name,'code':pc.code,'ip':pc.ip})
         return render_to_response('computerAdd.html',{'form': pcform,'id':id})
 
-def pcList(request):
-    list = Computer.objects.order_by('-id')
-    return render_to_response('computerList.html', {'list': list})
+def pcList(request, page):
+    container = {}
+
+    count = Computer.objects.order_by('-id').count()
+    pager = PageHelper.PageHelper('/web/pclist/', count, page,5)
+    list = Computer.objects.order_by('-id')[pager.start:pager.end]
+
+    pageHtml = pager.pageHtml()
+    container['list'] = list
+    container['pageHtml'] = pageHtml
+    return render_to_response('computerList.html', container)
 
 def transIntOrds(list):
     ret = ''
@@ -121,7 +132,7 @@ def userTypeAdd(request):
             else:
                 return HttpResponseRedirect('/web/utypeadd/')
         else:
-            return render_to_response('userTypeAdd.html',{'err':'保存失败！'})        
+            return render_to_response('userTypeAdd.html',{'form':utypeForm, 'err':'保存失败！'})
     else:        
         return render_to_response('userTypeAdd.html',{'form':utypeForm})
 
