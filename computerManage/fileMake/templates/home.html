@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件批量拼接</title>
+    <link rel="stylesheet" href="/statics/css/bootstrap.min.css">
+    <script type="text/javascript" src="/statics/js/jquery.js"></script>
+</head>
+<body>
+<div class="container">
+    <form action="/domakefiles/" method="post" class="form-horizontal" target="backFrame">
+        <div class="form-group">
+            <h3 class="col-md-5 text-center">文件批量拼接</h3>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">源文件夹：</label>
+            <div class="col-md-5"><input type="text" name="sourceDir" id="sourceDir" class="form-control"></div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">目标文件夹：</label>
+            <div class="col-md-5"><input type="text" name="toDir" id="toDir" class="form-control"></div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">文件列表：</label>
+            <div class="col-md-7"><textarea name="fileList" id="fileList" class="form-control" rows="10"></textarea> </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 text-center">
+                <button type="submit" class="btn btn-default" name="act" value="save">GO！</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <div class="col-md-10">
+        <iframe name="backFrame" id="backFrame" frameborder="0" height="300" width="100%"></iframe>
+    </div>
+</div>
+</body>
+</html>
