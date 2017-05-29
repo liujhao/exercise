@@ -5,6 +5,22 @@
     <title>文件批量拼接</title>
     <link rel="stylesheet" href="/statics/css/bootstrap.min.css">
     <script type="text/javascript" src="/statics/js/jquery.js"></script>
+    <script>
+        function setDirPath(obj, toinp, isFile) {
+            var dirPath = $(obj).val();
+            if(isFile){
+                var arr_dir = dirPath.split("\\");
+                var arr_dir2 = [];
+                for(var i=0; i<arr_dir.length-1; i++){
+                    arr_dir2[i] = arr_dir[i];
+                }
+                dirPath = arr_dir2.join("\\");
+                $("#"+toinp).val(dirPath);
+            }else{
+                $("#"+toinp).val(dirPath);
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -14,11 +30,31 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">源文件夹：</label>
-            <div class="col-md-5"><input type="text" name="sourceDir" id="sourceDir" class="form-control"></div>
+            <div class="col-md-5" style="position:relative">
+                <input type="text" name="sourceDir" id="sourceDir" class="form-control" style="width:73%;position:absolute;top:0;z-index: 10;border-right:none;">
+                <select name="hisSourceDir" id="hisSourceDir" class="form-control" style="width:80%;position:absolute;top:0;z-index: 8;" onchange="setDirPath(this,'sourceDir')">
+                    <option></option>
+                    {% for dirPath in sourceDirs %}
+                    <option>{{ dirPath }}</option>
+                    {% endfor %}
+                </select>
+                <!--
+                <input type="file" id="selectFile" value="浏览" style="display: none;" onchange="setDirPath(this,'sourceDir','1')">
+                <input type=button value="浏览" class="form-control" onclick="$('#selectFile').click()" style="position: absolute;right: 0;z-index: 10; width: 15%">
+                -->
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">目标文件夹：</label>
-            <div class="col-md-5"><input type="text" name="toDir" id="toDir" class="form-control"></div>
+            <div class="col-md-5" style="position:relative">
+                <input type="text" name="toDir" id="toDir" class="form-control" style="width:73%;position:absolute;top:0;z-index: 10;border-right:none;">
+                <select name="hisToDir" id="hisToDir" class="form-control" style="width:80%;position:absolute;top:0;z-index: 8;" onchange="setDirPath(this,'toDir')">
+                    <option></option>
+                    {% for dirPath in toDirs %}
+                    <option>{{ dirPath }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">文件列表：</label>
