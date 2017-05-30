@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}登录{% endblock %}
+{% block mainContent %}
+            <div class="content-L">
+
+            </div>
+            <div class="content-R">
+                <div class="box-idlogin">
+                    <div class="tab-box" style="margin-bottom: 10px;">
+                        <span class="tab-idlogin active" style="margin-left:10px; ">用户登录</span>
+                    </div>
+                    <form class="form-idlogin" action="/login/" method="post">
+                        <div class="pr"><input class="userid" id="id_username" maxlength="50" name="username" placeholder="用户名" value="{{ form.username }}" type="text" required /></div>
+                        <div class="pr"><input class="pwd" id="id_password" maxlength="20" name="password" placeholder="密码" value="{{ form.password }}" type="password" required /></div>
+                        <div class="pr"><input class="rancode" id="id_rndcode" maxlength="20" name="rndcode" placeholder="验证码" value="{{ form.rndcode }}" type="text" required />
+                        <div class="randPic"><img onclick="this.setAttribute('src','/rndcodepic/?nocache='+Math.random());" src="/rndcodepic/" title="点击刷新"/></div></div>
+                        <div class="box-btn">
+                            <div style="position:relative;margin-bottom:20px; width: 200px;">
+                                <span><input type="checkbox" name="keeplogin" class="keeplogin" value="1" checked>一个月内自动登录</span>
+                                <span class="fgtpwd"><a href="/resetpwd/">忘记密码?</a></span>
+                            </div>
+                            <div style="padding-left: 70px; margin-bottom: 8px;">
+                                <input type="submit" value="登录" class="btn pub-btn-valid pub-btn pub-icons" style="width: 63px;">
+                            </div>
+                            <span class="red">{{ err }}</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+

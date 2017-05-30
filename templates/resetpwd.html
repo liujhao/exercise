@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}登录{% endblock %}
+{% block mainContent %}
+            <div class="content-L">
+                <div class="box-idlogin">
+                    <div class="tab-box" style="margin-bottom: 10px;">
+                        <span class="tab-idlogin active" style="margin-left:10px; ">找回密码</span>
+                    </div>
+                    <form class="form-idlogin" action="/resetpwd/" method="post">
+                        <div class="pr"><input class="userid" id="id_username" maxlength="50" name="username" placeholder="用户名" value="{{ form.username }}" type="text" required /></div>
+                        <div class="pr"><input class="pwd" id="id_password" maxlength="20" name="email" placeholder="Email" value="{{ form.email }}" type="text" required /></div>
+                        <div class="pr"><input class="rancode" id="id_rndcode" maxlength="20" name="rndcode" placeholder="验证码" value="{{ form.rndcode }}" type="text" required />
+                        <div class="randPic"><img onclick="this.setAttribute('src','/rndcodepic/?nocache='+Math.random());" src="/rndcodepic/" title="点击刷新"/></div></div>
+                        <div class="box-btn">
+                            <div style="padding-left: 70px; margin-bottom: 8px;">
+                                <input type="submit" value="提交" class="btn pub-btn-valid pub-btn pub-icons" style="width: 63px;">
+                            </div>
+                            <span class="red">{{ err }}</span>
+                            <span class="green">{{ message }}</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="content-R">
+
+            </div>
+        </div>
+{% endblock %}
+

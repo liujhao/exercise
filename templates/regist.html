@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}注册{% endblock %}
+{% block mainContent %}
+            <div class="content-L">
+
+
+
+            </div>
+            <div class="content-R">
+                <div class="box-idlogin">
+                    <div class="tab-box" style="margin-bottom: 10px;">
+                        <span class="tab-idlogin active" style="margin-left:10px; ">用户注册</span>
+                    </div>
+                    <form class="form-idlogin" action="/regist/" method="post">
+                        <div class="pr">{{ form.username }}</div>
+                        <div class="pr">{{ form.password }}</div>
+                        <div class="pr">{{ form.nickname }}</div>
+                        <div class="pr">{{ form.email }}</div>
+                        <div style="padding-left: 70px;">
+                            <input type="submit" value="注册" class="btn pub-btn-valid pub-btn pub-icons" style="width: 63px;">
+                            <span class="red">{{ err }}</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+

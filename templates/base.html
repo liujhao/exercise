@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    {% block headpart %}{% endblock %}
+</head>
+<body>
+    <div class="pg-header">
+        <div class="head-content">
+            <div class="header-menu">
+                <a href="/" class="digg-logo"></a>
+                <div class="action-menu">
+                    <a href="/index/" class="tb{% if not ntype %} active{% endif %}">全部</a>
+                    {% for nav in navlist %}
+                    <a href="/news/{{ nav.id }}/" class="tb{% ifequal nav.id ntype %} active{% endifequal %}">{{ nav.display }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="key-sera">
+                <form action="/search/" method="post" name="searchFrm2" id="searchFrm2">
+                    <input type="text" class="search-txt-s" name="words" id="txtSearch2" autocomplete="off" value="{{ searchkey }}">
+                    <a href="javascript:;" class="i" name="searchBtn_2" id="searchBtn_3"><span class="ico"></span></a>
+                </form>
+            </div>
+            <div class="action-nav">
+                {% if curUser %}
+                    <div style="color:#ffffff;"> 欢迎，{{ curUser.nickname }}！
+                    <a href="/logout/" class="login-btn-a" id="login-link-a">退出</a>
+                    </div>
+                {% else %}
+                <a href="/regist/" class="login-btn-a" id="reg-link-a">注册</a><a href="/login/" class="login-btn-a" id="login-link-a">登录</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="pg-body">
+        <div class="main-content">
+            {% block mainContent %}{% endblock %}
+        </div>
+        <div class="pg-footer">
+            <div class="foot-nav">
+                <div style="display:none" id="y-destjid"></div>
+                <div style="display:none" id="y-destnick"></div>
+                <a href="/help/about" target="_blank">关于我们</a><span>|</span><a href="/help/contact" target="_blank">联系我们</a><span>|</span><a href="/help/service" target="_blank">服务条款</a><span>|</span><a href="/help/privacy" target="_blank">隐私政策</a><span>|</span><a href="/help/tool" target="_blank">抽屉新热榜工具</a><span>|</span><!--<a href="http://img.chouti.com/toolsffcj.html"
+                target="_blank">浏览器插件</a><span>|</span>--><a href="/download/model" target="_blank">下载客户端</a><span>|</span><a href="/feedback" target="_blank">意见与反馈</a><span>|</span><a href="/help/goodlink" target="_blank">友情链接</a><span>|</span><a href="http://www.shouye.com/Index.do?method=show&amp;pageId=44251&amp;jid=xinrebang@gozap.com" target="_blank">公告</a><!--<span>|</span><a href="/points/gifts" target="_blank">积分商城</a>-->
+
+            </div>
+            <div class="foot-nav2">
+                <span class="foot_d">旗下站点</span>
+                <span class="foot_a">©2017
+                chouti.com</span>
+                <a target="_blank" href="http://www.miibeian.gov.cn/" class="foot_b">京ICP备09053974号-3 京公网安备 110102004562</a>
+                <div style="margin-top:6px;">
+                    <span class="foot_d">违法和不良信息举报：</span>
+                    <span class="foot_a">电话：010-58302039  </span>
+                    <span class="foot_a" style="margin-left: 15px;">邮箱：<a style="color: #369;margin-right: 10px;" href="mailto:jubao@chouti.com">jubao@chouti.com</a> </span>
+                </div>
+                <div style="margin-top:6px;">版权所有：北京格致璞科技有限公司</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

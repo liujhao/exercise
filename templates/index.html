@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block headpart %}
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/comm.js"></script>
+{% endblock %}
+{% block mainContent %}
+            <div class="content-L">
+                <div class="content-list">
+                    {% for new in newsList %}
+                    <div class="item">
+                        <div class="timeIntoPool"></div>
+                        <div class="news-pic">
+                            {% if new.small_pic %}
+                            <img src="{{ new.small_pic }}" style="display: inline; cursor: -webkit-zoom-in;">
+                            {% endif %}
+                        </div>
+                        <div class="null-item"></div>
+                        <div class="news-content">
+                            <div class="part1">
+                                <a href="/viewnews/{{ new.id }}" target="_blank" class="show-content">{{ new.title }}</a>
+                                {% if new.snatch__title %}
+                                <span class="content-source">-<a href="{{ new.snatch__url }}" class="n3" target="_blank">{{ new.snatch__title }}</a></span>
+                                {% endif %}
+                                <a href="/news/{{ new.news_type__id }}/" class="n2"><span class="content-kind">{{ new.news_type__display }}</span></a>
+                            </div>
+                            <div class="area-summary">
+                                <span class="summary">{{ new.summary }}</span>
+                            </div>
+                            <div class="part2">
+                                <a href="javascript:;" class="digg-a" title="推荐" onclick="addFavor(this,{{ new.id }})">
+                                    <span class="hand-icon icon-digg"></span>
+                                    <b>{{ new.favor_count }}</b>
+                                </a>
+                                <a href="javascript:;" class="discus-a" title="回复" onclick="showReply({{ new.id }})">
+                                    <span class="hand-icon icon-discus"></span>
+                                    <b id="reply-count-{{ new.id }}">{{ new.reply_count }}</b>
+                                </a>
+                                <span class="left time-into">{{ new.create_date|date:"Y-m-d H:i:s" }}</span>
+                            </div>
+                            <div class="comment-box-area" id="comment-box-area-{{ new.id }}" isShow="0" style="display: none">
+                                <div class="pinglun arrow" style="left: 63px;"></div>
+                                <a class="pinglun close-comt" title="关闭" href="javascript:;" lang="{{ new.id }}"></a>
+                                <div class="corner comment-box" id="comment-box-{{ new.id }}">
+
+									<div class="loading-ico loading-ico-top" id="loading-comment-top-{{ new.id }}" style="margin-left: 230px; display: none;">加载中，请稍候...</div>
+									<div class="comment-box-top" id="comment-box-top-{{ new.id }}" style="display: block;">
+										<div class="tip-1">最热评论(<span id="newestCount-{{ new.id }}">0</span>)</div>
+										<div class="tip-2"><a href="/link/{{ new.id }}" target="_blank"><em class="pinglun em1"></em><span>去评论页面</span></a></div>
+									</div>
+									<!-- 评论树形 -->
+									<ul class="filetree comment-list-top-2 treeview" id="comment-list-top-{{ new.id }}">
+
+                                     </ul>
+
+
+									<!-- 评论输入框和回复框 -->
+									<div class="huifu-top-box" id="huifu-top-box-{{ new.id }}" style="display: block;">
+										<div class="box-l txt-input-area-div-top corner no-corner-bottom">
+                                            <div id="lab-comment-top-{{ new.id }}" class="lab-comment-top" style="display: none;">回复  <span id="nick--{{ new.id }}"></span>:</div>
+											<!-- 针对谣言文本输入框无效 -->
+
+												<textarea lang="{{ new.id }}" maxlength="150" name="txt-huifu-top" id="txt-huifu-top-{{ new.id }}" class="txt-huifu txt-huifu-top" style="text-indent: 0px; height: 20px; resize: none;"></textarea>
+
+
+										</div>
+										<div class="box-r">
+											<a id="pub-btn-top-{{ new.id }}" href="javascript:;" class="pub-icons add-pub-btn add-pub-btn-unvalid">评论</a>
+											<a id="pub-loading-top-{{ new.id }}" href="javascript:;" class="loading-ico loading-ico-top pub-loading-top">发布中...</a>
+										</div>
+									</div>
+									<div class="tip-3" id="hidden-comt-{{ new.id }}" style="display: block;">
+										<a href="javascript:;" class="hiddenCom-Btn" lang="{{ new.id }}"><em class="pinglun em2"></em><span>收起</span></a>
+									</div>
+									<div class="write-error-box-top">
+										<div class="write-error-desc" id="write-error-desc-{{ new.id }}" style="display: none;"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="no-bottom"></div>
+                <div id="page-area" class="page-area">
+                    <div id="dig_lcpage">
+                        <ul>
+                            {{ pageHtml }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-R">
+
+                <div class="chat-area" id="chat-area">
+                    <input class="islogin" value="" type="hidden">
+                    <input class="slogan" value="" type="hidden">
+                    <div class="chat" data-pswp-uid="1">
+                        <div class="chat-box">
+                            <div class="chat-mask">
+                                <div style="display:inline-block;width:30px;height:100%;background:white;"></div>
+                                <div style="display:inline-block;width:30px;height:100%;background:#ededed;"></div>
+                                <div style="position:absolute;width:300px;height:20px;background:white;left:-300px;top:-21px;"></div>
+                            </div>
+                            <div class="chat-main-box">
+                                <div class="chat-main-header">
+                                    <div class="tab-public active" style="width:100%;border-top-radius:4px;">公共聊天</div>
+                                </div>
+                                <div class="chat-public-box">
+                                    <div class="chat-public-content mCustomScrollbar _mCS_1 mCS-autoHide" style="position: relative; overflow: visible;">
+                                        <div id="mCSB_1" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside" style="max-height: none;" tabindex="0">
+                                            <div id="mCSB_1_container" class="mCSB_container" style="position: relative; left: 0px;" dir="ltr">
+                                                <ul>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-sender">
+{#                                        <div class="funcbar">#}
+{#                                            <div class="btn btn-face"></div>#}
+{#                                        </div>#}
+                                        <div class="inputer">
+                                            <textarea id="chatmsg"></textarea>
+                                            <div style="text-align:right;">
+                                                <div class="btn btn-send" tar="chat-public-content" onclick="sendChat()">发送</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="top-band" id="top-band">
+                    <div class="top-band-title" style="display: block;">
+                        <a id="top-title-news" href="javascript:;" class="top-band-title-select">热门文章</a><a id="top-title-comments" class="top-band-title-default" href="javascript:;">推荐浏览</a>
+                        <em id="top-bandArrow" style="left: 70px;"></em>
+                    </div>
+                    <div id="top-content-news" style="display: block;">
+                        {% for news in recommNews %}
+                        <div class="top-item">
+                            <div class="top-points">
+                                <a href="/viewnews/{{ news.id }}" class="points-a">{{ news.hit_count }}</a>
+                            </div>
+                            <a class="top-content" href="/viewnews/{{ news.id }}" target="_blank">{{ news.title }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div id="top-content-comments" style="display: none;">
+                        {% for news in recommNews2 %}
+                        <div class="top-item">
+                            <div class="top-points">
+                                <a href="/viewnews/{{ news.id }}" class="points-a">{{ news.hit_count }}</a>
+                            </div>
+                            <a class="top-content" href="/viewnews/{{ news.id }}" target="_blank">{{ news.title }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
