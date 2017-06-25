@@ -49,6 +49,7 @@ class FileCls:
         if not os.path.exists(dirPath):
             os.makedirs(dirPath)
         with open(newFilePath,'w', encoding=charset) as newFile:
+            # print(fileCon)
             newFile.write(fileCon)
             self.savedList.append(newFilePath)
         log = FileLog()
@@ -61,16 +62,18 @@ class FileCls:
     def makeFile(self):
         lines = self.fileContent()
         for line in lines:
+            # print(line)
             if re.search(r'<!--#\s*include\s+file=\"', line):
                 includeFiles = re.findall(r'<!--#\s*include\s+file=\"(.*)\"\s*-->', line)
                 for includeFile in includeFiles:
                     absIncludeFilePath = self.getAbsFilePath(includeFile)
                     if os.path.exists(absIncludeFilePath):
                         file2 = FileCls(absIncludeFilePath)
-                        newLine = re.sub(r'<!--#\s*include\s+file=\".*\"\s*-->', file2.makeFile(), line)
+                        newContent = file2.makeFile()
+                        newLine = re.sub(r'<!--#\s*include\s+file=\".*\"\s*-->', newContent, line)
                         self.lines.append(newLine)
             else:
-                self.lines.append(line)
+                self.lines.append(line.replace('\\','\\\\'))
         return ''.join(self.lines)
 
 # 记录源文件夹和目标文件夹变化记录
