@@ -62,7 +62,6 @@ class FileCls:
     def makeFile(self):
         lines = self.fileContent()
         for line in lines:
-            # print(line)
             if re.search(r'<!--#\s*include\s+file=\"', line):
                 includeFiles = re.findall(r'<!--#\s*include\s+file=\"(.*)\"\s*-->', line)
                 for includeFile in includeFiles:
@@ -70,10 +69,11 @@ class FileCls:
                     if os.path.exists(absIncludeFilePath):
                         file2 = FileCls(absIncludeFilePath)
                         newContent = file2.makeFile()
+                        newContent = newContent.replace('\\','\\\\')
                         newLine = re.sub(r'<!--#\s*include\s+file=\".*\"\s*-->', newContent, line)
                         self.lines.append(newLine)
             else:
-                self.lines.append(line.replace('\\','\\\\'))
+                self.lines.append(line)
         return ''.join(self.lines)
 
 # 记录源文件夹和目标文件夹变化记录
