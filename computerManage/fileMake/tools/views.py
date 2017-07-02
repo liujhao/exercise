@@ -1,6 +1,9 @@
-from django.shortcuts import render, HttpResponse
 import os
+import logging
+from django.shortcuts import render, HttpResponse
 from helper.FileCls import FileCls, FileLog
+
+logger = logging.getLogger('tools.views')
 
 def home(request):
     logDict = FileLog()
@@ -34,14 +37,18 @@ def doMakeFiles(request):
         fileList = fileListStr.split('\n')
         FileCls.rootPath = sourceDir
         FileCls.toDir = toDir
+        # FileCls.showCharset = False
         FileCls.savedList = []
         for i, item in enumerate(fileList):
             fpath = os.path.join(sourceDir, item[1:].strip().replace('/','\\'))
             if os.path.exists(fpath):
-                file1 = FileCls(fpath)
-                charset = file1.charset
-                fileCon = file1.makeFile()
-                file1.saveToFile(fpath, fileCon, charset)
+                try:
+                    file1 = FileCls(fpath)
+                    charset = file1.charset
+                    fileCon = file1.makeFile()
+                    file1.saveToFile(fpath, fileCon, charset)
+                except Exception as e:
+                    logger.error(e)
                 if(len(FileCls.savedList)>0):
                     msg = "<h3>成功生成以下文件：</h3>"+'<br>'.join(FileCls.savedList)
             else:

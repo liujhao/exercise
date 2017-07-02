@@ -10,6 +10,7 @@ class FileCls:
     rootPath = ''   # 文件根目录
     toDir = ''      # 生成新文件根目录
     savedList = []  # 已生成文件列表
+    showCharset = True  # 生成结果记录中是否显示编码信息
     def __init__(self, filePath):
         self.filePath = filePath
         self.charset = 'gb2312'
@@ -49,9 +50,9 @@ class FileCls:
         if not os.path.exists(dirPath):
             os.makedirs(dirPath)
         with open(newFilePath,'w', encoding=charset) as newFile:
-            # print(fileCon)
             newFile.write(fileCon)
-            self.savedList.append(newFilePath)
+            fileRet = newFilePath + ("<span style='margin-left:10px'>（编码："+ charset +"）" if FileCls.showCharset else "")
+            self.savedList.append(fileRet)
         log = FileLog()
         log.setSourceDir(FileCls.rootPath)
         log.setToDir(FileCls.toDir)

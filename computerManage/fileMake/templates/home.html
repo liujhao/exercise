@@ -38,10 +38,8 @@
                     <option>{{ dirPath }}</option>
                     {% endfor %}
                 </select>
-                <!--
                 <input type="file" id="selectFile" value="浏览" style="display: none;" onchange="setDirPath(this,'sourceDir','1')">
                 <input type=button value="浏览" class="form-control" onclick="$('#selectFile').click()" style="position: absolute;right: 0;z-index: 10; width: 15%">
-                -->
             </div>
         </div>
         <div class="form-group">
@@ -54,6 +52,8 @@
                     <option>{{ dirPath }}</option>
                     {% endfor %}
                 </select>
+                <input type="file" id="selectFile2" value="浏览" style="display: none;" onchange="setDirPath(this,'toDir','2')">
+                <input type=button value="浏览" class="form-control" onclick="$('#selectFile2').click()" style="position: absolute;right: 0;z-index: 10; width: 15%">
             </div>
         </div>
         <div class="form-group">
